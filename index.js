@@ -1,69 +1,57 @@
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
-const {app, Menu, Tray} = require('electron')
+const {app, Menu, Tray} = require('electron');
 
-let mainWindow
-let tray = null
+const Config = require("./Config");
 
-function main(){
-	mainWindow = new BrowserWindow({
-		icon:'icon.png',
-		webPreferences :{
-			nodeIntegration :false
-		},
-		show: false
-	});
-	mainWindow.maximize();
-	//createWindow --> create the window
-	mainWindow.loadURL('https://comunic.io');
-	//set the url who must be open
+let mainWindow;
+let tray = null;
+let page_finished_loading = false;
 
-	mainWindow.on('closed', () =>{
-		mainWindow = null;
-	});
-	//To close the window
-
-	tray = new Tray('./icon.png');
-
-	tray.setToolTip('Comunic');
-
-		
-	tray.setContextMenu(menu_1);
-	
-	console.log("Started succesfully");
-	
-	mainWindow.once('ready-to-show', () => {
-		mainWindow.show()
-	})
-};
-const menu_1 = Menu.buildFromTemplate([{
-		label: "Ouvrir la version stable",
-		click: () => {
-			mainWindow.loadURL('https://communiquons.org');
-			tray.setContextMenu(menu_2)		
-		}
-	},
-	{
-		label : 'Quit',
+const menu = Menu.buildFromTemplate([{
+		label : 'Close',
 		click: () => {
 			app.quit();
 			console.log("Closed");
 		}
 }]);
-const menu_2 = Menu.buildFromTemplate([{
-		label: "Ouvrir la nouvelle version",
-		click: () =>{
-			mainWindow.loadURL('https://comunic.io');
-			tray.setContextMenu(menu_1)
-		}
-	},
-	{
-		label:'Quit',
-		click: () => {
-			app.quit();
-			console.log("Closed");
-		}
-}]);
+
 
 console.log("Starting...");
-app.on('ready', main);
+app.on('ready', () => {
+
+	//Create and show main window
+	mainWindow = new BrowserWindow({
+		icon:'icon.png',
+		webPreferences: {
+			nodeIntegration: false
+		},
+		//show: false
+	});
+	//mainWindow.maximize();
+
+	//set the url which must be open
+	mainWindow.loadURL(Config.access_url);
+
+
+	mainWindow.on('closed', () =>{
+		//To close the window
+		mainWindow = null;
+	});
+
+
+	//Create tray
+	tray = new Tray('./icon.png');
+	tray.setToolTip('Comunic');
+	tray.setContextMenu(menu);
+
+	console.log("Started successfully");
+
+	mainWindow.once('ready-to-show', () => {
+		mainWindow.show();
+	});
+
+	mainWindow.webContents.on('did-finish-load', function() {
+		page_finished_loading = true;
+	});
+});
