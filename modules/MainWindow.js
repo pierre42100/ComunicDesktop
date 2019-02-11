@@ -10,6 +10,7 @@ const {Menu, Tray} = require('electron');
 const Config = require("../Config");
 const TrayMenu = require("./TrayMenu");
 const ApplicationMenu = require("./ApplicationMenu");
+const fs = require("fs");
 
 
 let mainWindow;
@@ -58,5 +59,21 @@ exports.show = function(){
 
 	mainWindow.webContents.on('did-finish-load', function() {
 		page_finished_loading = true;
+
+		//Inject CSS
+		fs.readFile("./app.css", (err, data) => {
+			
+			//Check for errors
+			if(err){
+				console.error("Error while loading ./app.css: " + err);
+				return;
+			}
+
+			let style = data.toString();
+			mainWindow.webContents.executeJavaScript("let style = document.createElement('style');" +
+				"style.innerHTML = decodeURIComponent(\""+encodeURIComponent(style)+"\");" +
+				"document.head.appendChild(style);");
+			
+		});
 	});
 }
