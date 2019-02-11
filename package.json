@@ -4,12 +4,13 @@
   "description": "A client-desktop for communiquons.org",
   "main": "index.js",
   "scripts": {
-    "test": "electron ."
+    "test": "electron .",
+    "run": "electron index.js"
   },
   "author": "Team dev communic",
   "license": "GPL-3.0",
   "dependencies": {},
   "devDependencies": {
-    "electron": "^3.0.1"
+    "electron": "^3.1.3"
   }
 }
