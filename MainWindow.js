@@ -6,9 +6,10 @@
 
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
-const {Tray} = require('electron');
+const {Menu, Tray} = require('electron');
 const Config = require("./Config");
 const TrayMenu = require("./TrayMenu");
+const ApplicationMenu = require("./ApplicationMenu");
 
 
 let mainWindow;
@@ -47,6 +48,9 @@ exports.show = function(){
 	tray.setContextMenu(TrayMenu);
 
 	console.log("Started successfully");
+
+	//Set application menu
+	Menu.setApplicationMenu(ApplicationMenu.Get(mainWindow));
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
