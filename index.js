@@ -6,7 +6,7 @@
 
 const {app} = require('electron');
 
-const MainWindow = require("./MainWindow");
+const MainWindow = require("./modules/MainWindow");
 
 console.log("Starting...");
 app.on('ready', () => {

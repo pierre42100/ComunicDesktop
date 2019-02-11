@@ -7,7 +7,7 @@
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 const {Menu, Tray} = require('electron');
-const Config = require("./Config");
+const Config = require("../Config");
 const TrayMenu = require("./TrayMenu");
 const ApplicationMenu = require("./ApplicationMenu");
 
