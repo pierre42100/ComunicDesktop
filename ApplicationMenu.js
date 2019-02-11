@@ -44,6 +44,16 @@ module.exports.Get = function(window){
 					click: () => {
 						window.webContents.executeJavaScript("ComunicWeb.components.darkTheme.setEnabled(!ComunicWeb.components.darkTheme.isEnabled());");
 					}
+				},
+
+
+				//Incognito mode
+				{
+					label: "Enable incognito mode",
+					sublabel: "F6",
+					click: () => {
+						window.webContents.executeJavaScript("ComunicWeb.components.incognito.ui.confirmEnable();");
+					}
 				}
 			]
 		},
