@@ -14,6 +14,12 @@ const {app, Menu} = require('electron');
  */
 module.exports.Get = function(window){
 
+	/**
+	 * Execute javascript quickly
+	 */
+	let js = function(code) {window.webContents.executeJavaScript(code)};
+
+
 	return Menu.buildFromTemplate([
 
 		//File menu
@@ -33,6 +39,47 @@ module.exports.Get = function(window){
 		},
 
 
+		//Shorcuts menu
+		{
+			label: "Shorcuts",
+			submenu: [
+
+
+				//Latest posts
+				{
+					label: "Latest posts",
+					click: () => {
+						js("openPage('latest');");
+					}
+				},
+
+				//User page
+				{
+					label: "Your page",
+					click: () => {
+						js("openPage('user/' + userID());");
+					}
+				},
+
+				//Conversations
+				{
+					label: "Conversations",
+					click: () => {
+						js("openPage('conversations');");
+					}
+				},
+
+				//Groups
+				{
+					label: "Groups",
+					click: () => {
+						js("openPage('groups');");
+					}
+				}
+
+			]
+		},
+
 		//Settings menu
 		{
 			label: "Settings",
@@ -42,7 +89,7 @@ module.exports.Get = function(window){
 				{
 					label: "Toggle dark mode",
 					click: () => {
-						window.webContents.executeJavaScript("ComunicWeb.components.darkTheme.setEnabled(!ComunicWeb.components.darkTheme.isEnabled());");
+						js("ComunicWeb.components.darkTheme.setEnabled(!ComunicWeb.components.darkTheme.isEnabled());");
 					}
 				},
 
@@ -52,9 +99,19 @@ module.exports.Get = function(window){
 					label: "Enable incognito mode",
 					sublabel: "F6",
 					click: () => {
-						window.webContents.executeJavaScript("ComunicWeb.components.incognito.ui.confirmEnable();");
+						js("ComunicWeb.components.incognito.ui.confirmEnable();");
+					}
+				},
+
+
+				//Account settings
+				{
+					label: "Account settings",
+					click: () => {
+						js("openPage('settings');");
 					}
 				}
+
 			]
 		},
 
